@@ -1,8 +1,8 @@
+import React from 'react'
+import Template from '../components/Template'
+import loginImg from "../assets/login.png"
 
-import loginImg from "../assets/login.png";
-import Template from "../components/Template";
-
-function Login({ setisloggedin }) {
+const Login = ({setIsLoggedIn}) => {
   return (
     <Template
       title="Welcome Back"
@@ -10,10 +10,9 @@ function Login({ setisloggedin }) {
       desc2="Education to future-proof your career."
       image={loginImg}
       formtype="login"
-      setisloggedin={setisloggedin}
+      setIsLoggedIn={setIsLoggedIn}
     />
-     
-  );
+  )
 }
 
-export default Login;
+export default Login

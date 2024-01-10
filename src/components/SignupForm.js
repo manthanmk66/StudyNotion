@@ -1,166 +1,185 @@
 import React, { useState } from 'react'
-import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai';
-import toast  from 'react-hot-toast';
+import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
+import {toast} from "react-hot-toast"
+import { useNavigate } from 'react-router-dom';
 
 
- const SignupForm = ({setisloggedin}) => {
+const SignupForm = ({setIsLoggedIn}) => {
+    const navigate = useNavigate();
 
-    const [formdata,setformdata]=useState({
-        firstname:"",
-        lastname:"",
+    const [formData, setFormData] = useState({
+        firstName:"",
+        lastName:"",
         email:"",
         password:"",
-        confirmpassword:""
-       
-
+        confirmPassword:""
     })
 
-    const [showpassword,setshowpassword]=useState(false)
+    const [showPassword, setShowPassword] = useState(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+    const [accountType, setAccountType] = useState("student");
 
+    function changeHandler(event) {
 
-    function changehandler(event){
-        setformdata((prevData)=>(
+        setFormData( (prevData) =>(
             {
                 ...prevData,
                 [event.target.name]:event.target.value
             }
-        ))
+        ) )
 
     }
 
-
-
-    function Submithandler(event){
+    function submitHandler(event) {
         event.preventDefault();
-        if(formdata.password != formdata.confirmpassword){
-            toast.error("password did not match");
-            return;
-
+        if(formData.password != formData.confirmPassword) {
+            toast.error("Passwords do not match");
+            return ;
         }
-        setisloggedin(true);
-        toast.success("Account is Created")
+
+        setIsLoggedIn(true);
+        toast.success("Account Created");
+        const accountData = {
+            ...formData
+        };
+
+        const finalData = {
+            ...accountData,
+            accountType
+        }
+
+        console.log("printing Final account data ");
+        console.log(finalData);
+
+        navigate("/dashboard");
 
     }
+
+
   return (
-
     <div>
-    {/*Student-Instructor tab */}
-    <div>
-        <button>
-            Student
-        </button>
-        <button>
-            Instructor
-        </button>
+        {/* student-Instructor tab */}
+        <div
+        className='flex bg-richblack-800 p-1 gap-x-1 my-6 rounded-full max-w-max'>
 
-    </div>
-    <form onSubmit={Submithandler}>
-        {/* first name last name */}
+            <button
+            className={`${accountType === "student" 
+            ?
+              "bg-richblack-900 text-richblack-5"
+            :"bg-transparent text-richblack-200"} py-2 px-5 rounded-full transition-all duration-200`}
+            onClick={()=> setAccountType("student")}>
+                Student
+            </button>
 
-        <div>
-
-        <label>
-            
-            <p> First Name<sup>*</sup> </p>
-            <input
-            required 
-            type='text'
-            name='firstname'
-            onChange={changehandler}
-            placeholder='Enter first name'
-            value={formdata.firstname}
-             
-            />
-           
-        </label>
-
-        <label>
-            
-            <p> Last Name<sup>*</sup> </p>
-            <input
-            required 
-            type='text'
-            name='lastname'
-            onChange={changehandler}
-            placeholder='Enter last name'
-            value={formdata.lastname}
-             
-            />
-           
-        </label>
-
+            <button
+            className={`${accountType === "instructor" 
+            ?
+              "bg-richblack-900 text-richblack-5"
+            :"bg-transparent text-richblack-200"} py-2 px-5 rounded-full transition-all duration-200`}
+            onClick={() => setAccountType("instructor")}>
+                Instructor
+            </button>
         </div>
 
-        {/* Email Address */}
+        <form onSubmit={submitHandler} >
+        {/* first name and lastName */}
+            <div className='flex gap-x-4 mt-[20px]'>
+                    <label className='w-full'>
+                        <p className='text-[0.875rem] text-richblack-5 mb-1 leading-[1.375rem]'>First Name<sup className='text-pink-200'>*</sup></p>
+                        <input
+                            required
+                            type="text"
+                            name="firstName"
+                            onChange={changeHandler}
+                            placeholder="Enter First Name"
+                            value={formData.firstName}
+                            className='bg-richblack-800 rounded-[0.5rem] text-richblack-5 w-full p-[12px]'
+                        />
+                    </label>
 
-        <label>
+                    <label className='w-full'>
+                        <p className='text-[0.875rem] text-richblack-5 mb-1 leading-[1.375rem]'>Last Name<sup className='text-pink-200'>*</sup></p>
+                        <input
+                            required
+                            type="text"
+                            name="lastName"
+                            onChange={changeHandler}
+                            placeholder="Enter Last Name"
+                            value={formData.lastName}
+                            className='bg-richblack-800 rounded-[0.5rem] text-richblack-5 w-full p-[12px]'
+                        />
+                    </label>
+            </div>
+            {/* email Add */}
+            <div className='mt-[20px]'>
+            <label className='w-full mt-[20px]'>
+                    <p className='text-[0.875rem] text-richblack-5 mb-1 leading-[1.375rem]'>Email Address<sup className='text-pink-200'>*</sup></p>
+                    <input
+                        required
+                        type="email"
+                        name="email"
+                        onChange={changeHandler}
+                        placeholder="Enter Email Address "
+                        value={formData.email}
+                        className='bg-richblack-800 rounded-[0.5rem] text-richblack-5 w-full p-[12px]'
+                    />
+            </label>
+            </div>
             
-            <p> Email Address<sup>*</sup> </p>
-            <input
-            required 
-            type='email'
-            name='email'
-            onChange={changehandler}
-            placeholder='Enter Email Address'
-            value={formdata.email}
-             
-            />
-           
-        </label>
 
-        {/* create password and confirm password */}
+            {/* createPassword and Confirm Password */}
+            <div className='w-full flex gap-x-4 mt-[20px]'>
+                <label className='w-full relative'>
+                    <p className='text-[0.875rem] text-richblack-5 mb-1 leading-[1.375rem]'>Create Password<sup className='text-pink-200'>*</sup></p>
+                    <input
+                        required
+                        type= {showPassword ? ("text") : ("password")}
+                        name="password"
+                        onChange={changeHandler}
+                        placeholder="Enter Password"
+                        value={formData.password}
+                        className='bg-richblack-800 rounded-[0.5rem] text-richblack-5 w-full p-[12px]'
+                    />
+                    <span
+                     className='absolute right-3 top-[38px] cursor-pointer' 
+                    onClick={() => setShowPassword((prev) => !prev)}>
+                        {showPassword ? 
 
-        
+                        (<AiOutlineEyeInvisible fontSize={24} fill='#AFB2BF'/>) : 
 
+                        (<AiOutlineEye fontSize={24} fill='#AFB2BF'/>)}
+                    </span>
+                </label>
 
-        <label>
-            
-            <p> Create paswword<sup>*</sup> </p>
-            <input
-            required 
-            type={showpassword ? ("text"): ("password")}
-            name='password'
-            onChange={changehandler}
-            placeholder='Enter password'
-            value={formdata.password}
-             
-            />
-               <span onClick={()=>setshowpassword((prev) =>!prev)}>
-                    {showpassword?(<AiOutlineEye/>):(<AiOutlineEyeInvisible/>)}
-                </span>
-           
-        </label>
+                <label className='w-full relative'>
+                    <p className='text-[0.875rem] text-richblack-5 mb-1 leading-[1.375rem]'>Confirm Password<sup className='text-pink-200'>*</sup></p>
+                    <input
+                        required
+                        type= {showConfirmPassword ? ("text") : ("password")}
+                        name="confirmPassword"
+                        onChange={changeHandler}
+                        placeholder="Confirm Password"
+                        value={formData.confirmPassword}
+                        className='bg-richblack-800 rounded-[0.5rem] text-richblack-5 w-full p-[12px]'
+                    />
+                    <span 
+                     className='absolute right-3 top-[38px] cursor-pointer'
+                    onClick={() => setShowConfirmPassword((prev) => !prev)}>
+                        {showConfirmPassword ?
 
-        <label>
-            
-            <p> Confirm Password<sup>*</sup> </p>
-            <input
-            required 
-            type={showpassword ? ("text"): ("password")}
-            name='confirmpassword'
-            onChange={changehandler}
-            placeholder='Confirm Password'
-            value={formdata.confirmpassword}
-             
-            />
+                         (<AiOutlineEyeInvisible fontSize={24} fill='#AFB2BF'/>) : 
 
-                <span onClick={()=>setshowpassword((prev) =>!prev)}>
-                    {showpassword?(<AiOutlineEye/>):(<AiOutlineEyeInvisible/>)}
-                </span>
-           
-        </label>
-        <div/>
-
-        <button>
+                         (<AiOutlineEye fontSize={24} fill='#AFB2BF'/>)}
+                    </span>
+                </label>
+            </div>
+        <button className=' w-full bg-yellow-50 rounded-[8px] font-medium text-richblack-900 px-[12px] py-[8px] mt-6'>
             Create Account
-
         </button>
-        
-    </form>
+        </form>
+
     </div>
-   
   )
 }
 
-
-export default SignupForm;
+export default SignupForm

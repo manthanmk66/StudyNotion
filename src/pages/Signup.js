@@ -1,9 +1,8 @@
-import Template from "../components/Template";
-import signupImg from "../assets/signup.png";
+import React from 'react'
+import signupImg from "../assets/signup.png"
+import Template from '../components/Template'
 
-
-
-function Signup({ setisloggedin }) {
+const Signup = ({setIsLoggedIn}) => {
   return (
     <Template
       title="Join the millions learning to code with StudyNotion for free"
@@ -11,10 +10,9 @@ function Signup({ setisloggedin }) {
       desc2="Education to future-proof your career."
       image={signupImg}
       formtype="signup"
-      setisloggedin={setisloggedin}
+      setIsLoggedIn={setIsLoggedIn}
     />
-   
-  );
+  )
 }
 
-export default Signup;
+export default Signup
